@@ -12,6 +12,7 @@
  */
 get_header(); ?>
    	<div id="main">
+	   	<?php get_sidebar(); ?>
         <div id="main-part">
 			<?php if(function_exists('memory_breadcrumbs') and cs_get_option( 'memory_breadcrumbs' )==1) { ?>
 				<div class="memory-item breadcrumbs">当前位置：
@@ -29,7 +30,7 @@ get_header(); ?>
 										<?php if ( has_post_thumbnail() ) { ?>
 											<div class="thumbnail-link" style="background-image:url('<?php echo get_the_post_thumbnail_url(get_the_ID(),'full'); ?>');"></div>
 										<?php } else { ?>
-											<div class="thumbnail-link" style="background-image:url('<?php $unique_id = cs_get_option('memory_post_image'); $attachment = wp_get_attachment_image_src( $unique_id, 'full' ); $image_url = ($attachment) ? $attachment[0] : $unique_id; print_r($image_url);?>')"></div>
+											<!-- <div class="thumbnail-link" style="background-image:url('<?php $unique_id = cs_get_option('memory_post_image'); $attachment = wp_get_attachment_image_src( $unique_id, 'full' ); $image_url = ($attachment) ? $attachment[0] : $unique_id; print_r($image_url);?>')"></div> -->
 										<?php } ?>
 										<div class="post-relative">
 											<?php echo get_avatar( get_the_author_meta( 'ID' ) ); ?>
@@ -155,7 +156,7 @@ get_header(); ?>
 				<?php next_posts_link(__('<div class="page-more">(｡・`ω´･)点我加载更多</div>')); ?>
 				<?php } else { echo '<div class="page-more">你已到达了世界的尽头(｡・`ω´･)！</div>'; } ?>  
 			</div>
-        </div>
-        <?php get_sidebar(); ?>
+		</div>
+		<?php get_sidebar('right'); ?>
     </div>
 <?php get_footer(); 

@@ -4,7 +4,7 @@ add_action( 'wp_enqueue_scripts', 'jquery_register' );
 function jquery_register() {
 	if( !is_admin()){
 		wp_deregister_script( 'jquery' );
-		wp_register_script( 'jquery', get_template_directory_uri() . '/js/jquery-3.2.1.min.js', false, null , true );
+		wp_register_script( 'jquery', get_template_directory_uri() . '/js/jquery.min.js', false, null , true );
 		wp_enqueue_script( 'jquery' );
 	}
 }
@@ -279,7 +279,7 @@ function memory_breadcrumbs() {
 		}
 		if ( get_query_var('paged') ) { // 分页
 			if ( is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author() )
-				echo sprintf( __( '( 第%s页 )', 'Memory' ), get_query_var('paged') );
+				echo sprintf( __( '( 第%s页 ]', 'Memory' ), get_query_var('paged') );
 		}
 		echo '</span>';
 	}
@@ -354,7 +354,7 @@ function memory_comment($comment, $args, $depth) {
 				if (get_comment_author_url()!=null) { ?>
 					<a href="<?php echo get_comment_author_url(); ?>" target="_blank">
 				<?php } 
-				echo get_avatar($comment, 48);
+				echo '<img class="avatar lazy" src="' . get_bloginfo('template_directory') . '/img/squares.svg" alt="avatar" data-original="' . preg_replace(array('/^.+(src=)(\"|\')/i', '/(\"|\')\sclass=(\"|\').+$/i'), array('', ''), get_avatar( $comment, '48' )) . '" />';
 				if (get_comment_author_url()!=null) { ?>
 				</a>
 				<?php } 
@@ -610,13 +610,13 @@ function memory_archives_list() {
             if ($year != $year_tmp && $year > 0) $output .= '</ul>';
             if ($year != $year_tmp) {
                 $year = $year_tmp;
-                $output .= '<h3 class="al_year">'. $year .' 年</h3><ul class="al_mon_list">'; //输出年份
+                $output .= '<h2 class="al_year">'. $year .' 年</h2><ul class="al_mon_list">'; //输出年份
             }
             if ($mon != $mon_tmp) {
                 $mon = $mon_tmp;
-                $output .= '<li><span class="al_mon">'.$mon.'</span><ul class="al_post_list">'; //输出月份
+                $output .= '<li><h3><span class="al_mon">'.$mon.'</span></h3><ul class="al_post_list">'; //输出月份
             }
-            $output .= '<li>'.'<a class="no-des" href="'. get_permalink() .'">'.get_the_time('j日: ') . get_the_title() .'('. get_comments_number('0', '1', '%') .'条评论)</a></li>'; //输出文章日期和标题
+            $output .= '<li>'.'<a class="no-des" href="'. get_permalink() .'">'.get_the_time('j日: ') . get_the_title() .'('. get_comments_number('0', '1', '%') .'条评论11111111)</a></li>'; //输出文章日期和标题
         endwhile;
         wp_reset_postdata();
         $output .= '</ul></li></ul></div>';
@@ -633,138 +633,209 @@ add_action('save_post', 'clear_memory_cache'); // 新发表文章/修改文章�
 add_filter('pre_option_link_manager_enabled','__return_true');
 
 function comment_add_owo($comment_text, $comment = '') {
+    $emojiCDN = 'https://rawcdn.githack.com/liub1934/LB-Blog/26f389116a54f7cccd9ec62cced12cc5f37568fb/wp-content/themes/Memory';
     $data_OwO = array(
-        '@(便便)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/便便@2x.png" alt="便便" class="OwO-img">',
-        '@(暗地观察)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/暗地观察@2x.png" alt="暗地观察" class="OwO-img">',
-        '@(不出所料)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/不出所料@2x.png" alt="不出所料" class="OwO-img">',
-        '@(不高兴)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/不高兴@2x.png" alt="不高兴" class="OwO-img">',
-        '@(不说话)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/不说话@2x.png" alt="不说话" class="OwO-img">',
-        '@(抽烟)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/抽烟@2x.png" alt="抽烟" class="OwO-img">',
-        '@(呲牙)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/呲牙@2x.png" alt="呲牙" class="OwO-img">',
-        '@(大囧)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/大囧@2x.png" alt="大囧" class="OwO-img">',
-        '@(得意)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/得意@2x.png" alt="得意" class="OwO-img">',
-        '@(愤怒)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/愤怒@2x.png" alt="愤怒" class="OwO-img">',
-        '@(尴尬)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/尴尬@2x.png" alt="尴尬" class="OwO-img">',
-        '@(高兴)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/高兴@2x.png" alt="高兴" class="OwO-img">',
-        '@(鼓掌)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/鼓掌@2x.png" alt="鼓掌" class="OwO-img">',
-        '@(观察)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/观察@2x.png" alt="观察" class="OwO-img">',
-        '@(害羞)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/害羞@2x.png" alt="害羞" class="OwO-img">',
-        '@(汗)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/汗@2x.png" alt="汗" class="OwO-img">',
-        '@(黑线)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/黑线@2x.png" alt="黑线" class="OwO-img">',
-        '@(欢呼)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/欢呼@2x.png" alt="欢呼" class="OwO-img">',
-        '@(击掌)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/击掌@2x.png" alt="击掌" class="OwO-img">',
-        '@(惊喜)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/惊喜@2x.png" alt="惊喜" class="OwO-img">',
-        '@(看不见)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/看不见@2x.png" alt="看不见" class="OwO-img">',
-        '@(看热闹)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/看热闹@2x.png" alt="看热闹" class="OwO-img">',
-        '@(抠鼻)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/抠鼻@2x.png" alt="抠鼻" class="OwO-img">',
-        '@(口水)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/口水@2x.png" alt="口水" class="OwO-img">',
-        '@(哭泣)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/哭泣@2x.png" alt="哭泣" class="OwO-img">',
-        '@(狂汗)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/狂汗@2x.png" alt="狂汗" class="OwO-img">',
-        '@(蜡烛)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/蜡烛@2x.png" alt="蜡烛" class="OwO-img">',
-        '@(脸红)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/脸红@2x.png" alt="脸红" class="OwO-img">',
-        '@(内伤)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/内伤@2x.png" alt="内伤" class="OwO-img">',
-        '@(喷水)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/喷水@2x.png" alt="喷水" class="OwO-img">',
-        '@(喷血)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/喷血@2x.png" alt="喷血" class="OwO-img">',
-        '@(期待)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/期待@2x.png" alt="期待" class="OwO-img">',
-        '@(亲亲)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/亲亲@2x.png" alt="亲亲" class="OwO-img">',
-        '@(傻笑)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/傻笑@2x.png" alt="傻笑" class="OwO-img">',
-        '@(扇耳光)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/扇耳光@2x.png" alt="扇耳光" class="OwO-img">',
-        '@(深思)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/深思@2x.png" alt="深思" class="OwO-img">',
-        '@(锁眉)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/锁眉@2x.png" alt="锁眉" class="OwO-img">',
-        '@(投降)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/投降@2x.png" alt="投降" class="OwO-img">',
-        '@(吐)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/吐@2x.png" alt="吐" class="OwO-img">',
-        '@(吐舌)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/吐舌@2x.png" alt="吐舌" class="OwO-img">',
-        '@(吐血倒地)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/吐血倒地@2x.png" alt="吐血倒地" class="OwO-img">',
-        '@(无奈)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/无奈@2x.png" alt="无奈" class="OwO-img">',
-        '@(无所谓)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/无所谓@2x.png" alt="无所谓" class="OwO-img">',
-        '@(无语)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/无语@2x.png" alt="无语" class="OwO-img">',
-        '@(喜极而泣)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/喜极而泣@2x.png" alt="喜极而泣" class="OwO-img">',
-        '@(献花)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/献花@2x.png" alt="献花" class="OwO-img">',
-        '@(献黄瓜)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/献黄瓜@2x.png" alt="献黄瓜" class="OwO-img">',
-        '@(想一想)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/想一想@2x.png" alt="想一想" class="OwO-img">',
-        '@(小怒)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/小怒@2x.png" alt="小怒" class="OwO-img">',
-        '@(小眼睛)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/小眼睛@2x.png" alt="小眼睛" class="OwO-img">',
-        '@(邪恶)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/邪恶@2x.png" alt="邪恶" class="OwO-img">',
-        '@(咽气)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/咽气@2x.png" alt="咽气" class="OwO-img">',
-        '@(阴暗)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/阴暗@2x.png" alt="阴暗" class="OwO-img">',
-        '@(赞一个)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/赞一个@2x.png" alt="赞一个" class="OwO-img">',
-        '@(长草)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/长草@2x.png" alt="长草" class="OwO-img">',
-        '@(中刀)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/中刀@2x.png" alt="中刀" class="OwO-img">',
-        '@(中枪)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/中枪@2x.png" alt="中枪" class="OwO-img">',
-        '@(中指)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/中指@2x.png" alt="中指" class="OwO-img">',
-        '@(肿包)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/肿包@2x.png" alt="肿包" class="OwO-img">',
-        '@(皱眉)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/皱眉@2x.png" alt="皱眉" class="OwO-img">',
-        '@(装大款)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/装大款@2x.png" alt="装大款" class="OwO-img">',
-        '@(坐等)' => '<img src="'.get_bloginfo('template_url').'/emoji/alu/坐等@2x.png" alt="坐等" class="OwO-img">',
-        '@[啊]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/啊@2x.png" alt="啊" class="OwO-img">',
-        '@[爱心]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/爱心@2x.png" alt="爱心" class="OwO-img">',
-        '@[鄙视]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/鄙视@2x.png" alt="鄙视" class="OwO-img">',
-        '@[便便]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/便便@2x.png" alt="便便" class="OwO-img">',
-        '@[不高兴]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/不高兴@2x.png" alt="不高兴" class="OwO-img">',
-        '@[彩虹]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/彩虹@2x.png" alt="彩虹" class="OwO-img">',
-        '@[茶杯]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/茶杯@2x.png" alt="茶杯" class="OwO-img">',
-        '@[大拇指]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/大拇指@2x.png" alt="大拇指" class="OwO-img">',
-        '@[蛋糕]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/蛋糕@2x.png" alt="蛋糕" class="OwO-img">',
-        '@[灯泡]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/灯泡@2x.png" alt="灯泡" class="OwO-img">',
-        '@[乖]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/乖@2x.png" alt="乖" class="OwO-img">',
-        '@[哈哈]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/哈哈@2x.png" alt="哈哈" class="OwO-img">',
-        '@[汗]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/汗@2x.png" alt="汗" class="OwO-img">',
-        '@[呵呵]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/呵呵@2x.png" alt="呵呵" class="OwO-img">',
-        '@[黑线]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/黑线@2x.png" alt="黑线" class="OwO-img">',
-        '@[红领巾]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/红领巾@2x.png" alt="红领巾" class="OwO-img">',
-        '@[呼]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/呼@2x.png" alt="呼" class="OwO-img">',
-        '@[花心]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/花心@2x.png" alt="花心" class="OwO-img">',
-        '@[滑稽]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/滑稽@2x.png" alt="滑稽" class="OwO-img">',
-        '@[惊哭]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/惊哭@2x.png" alt="惊哭" class="OwO-img">',
-        '@[惊讶]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/惊讶@2x.png" alt="惊讶" class="OwO-img">',
-        '@[开心]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/开心@2x.png" alt="开心" class="OwO-img">',
-        '@[酷]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/酷@2x.png" alt="酷" class="OwO-img">',
-        '@[狂汗]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/狂汗@2x.png" alt="狂汗" class="OwO-img">',
-        '@[蜡烛]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/蜡烛@2x.png" alt="蜡烛" class="OwO-img">',
-        '@[懒得理]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/懒得理@2x.png" alt="懒得理" class="OwO-img">',
-        '@[泪]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/泪@2x.png" alt="泪" class="OwO-img">',
-        '@[冷]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/冷@2x.png" alt="冷" class="OwO-img">',
-        '@[礼物]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/礼物@2x.png" alt="礼物" class="OwO-img">',
-        '@[玫瑰]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/玫瑰@2x.png" alt="玫瑰" class="OwO-img">',
-        '@[勉强]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/勉强@2x.png" alt="勉强" class="OwO-img">',
-        '@[你懂的]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/你懂的@2x.png" alt="你懂的" class="OwO-img">',
-        '@[怒]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/怒@2x.png" alt="怒" class="OwO-img">',
-        '@[喷]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/喷@2x.png" alt="喷" class="OwO-img">',
-        '@[钱]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/钱@2x.png" alt="钱" class="OwO-img">',
-        '@[钱币]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/钱币@2x.png" alt="钱币" class="OwO-img">',
-        '@[弱]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/弱@2x.png" alt="弱" class="OwO-img">',
-        '@[三道杠]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/三道杠@2x.png" alt="三道杠" class="OwO-img">',
-        '@[沙发]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/沙发@2x.png" alt="沙发" class="OwO-img">',
-        '@[生气]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/生气@2x.png" alt="生气" class="OwO-img">',
-        '@[胜利]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/胜利@2x.png" alt="胜利" class="OwO-img">',
-        '@[手纸]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/手纸@2x.png" alt="手纸" class="OwO-img">',
-        '@[睡觉]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/睡觉@2x.png" alt="睡觉" class="OwO-img">',
-        '@[酸爽]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/酸爽@2x.png" alt="酸爽" class="OwO-img">',
-        '@[太开心]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/太开心@2x.png" alt="太开心" class="OwO-img">',
-        '@[太阳]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/太阳@2x.png" alt="太阳" class="OwO-img">',
-        '@[吐]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/吐@2x.png" alt="吐" class="OwO-img">',
-        '@[吐舌]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/吐舌@2x.png" alt="吐舌" class="OwO-img">',
-        '@[挖鼻]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/挖鼻@2x.png" alt="挖鼻" class="OwO-img">',
-        '@[委屈]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/委屈@2x.png" alt="委屈" class="OwO-img">',
-        '@[捂嘴笑]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/捂嘴笑@2x.png" alt="捂嘴笑" class="OwO-img">',
-        '@[犀利]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/犀利@2x.png" alt="犀利" class="OwO-img">',
-        '@[香蕉]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/香蕉@2x.png" alt="香蕉" class="OwO-img">',
-        '@[小乖]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/小乖@2x.png" alt="小乖" class="OwO-img">',
-        '@[小红脸]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/小红脸@2x.png" alt="小红脸" class="OwO-img">',
-        '@[笑尿]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/笑尿@2x.png" alt="笑尿" class="OwO-img">',
-        '@[笑眼]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/笑眼@2x.png" alt="笑眼" class="OwO-img">',
-        '@[心碎]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/心碎@2x.png" alt="心碎" class="OwO-img">',
-        '@[星星月亮]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/星星月亮@2x.png" alt="星星月亮" class="OwO-img">',
-        '@[呀咩爹]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/呀咩爹@2x.png" alt="呀咩爹" class="OwO-img">',
-        '@[药丸]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/药丸@2x.png" alt="药丸" class="OwO-img">',
-        '@[咦]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/咦@2x.png" alt="咦" class="OwO-img">',
-        '@[疑问]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/疑问@2x.png" alt="疑问" class="OwO-img">',
-        '@[阴险]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/阴险@2x.png" alt="阴险" class="OwO-img">',
-        '@[音乐]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/音乐@2x.png" alt="音乐" class="OwO-img">',
-        '@[真棒]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/真棒@2x.png" alt="真棒" class="OwO-img">',
-        '@[nico]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/nico@2x.png" alt="nico" class="OwO-img">',
-        '@[OK]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/OK@2x.png" alt="OK" class="OwO-img">',
-        '@[what]' => '<img src="'.get_bloginfo('template_url').'/emoji/paopao/what@2x.png" alt="what" class="OwO-img">'
+        //阿鲁
+        '[alu-便便]' => '<img src="'.$emojiCDN.'/emoji/alu/便便@2x.png" alt="便便" class="OwO-img">',
+        '[alu-暗地观察]' => '<img src="'.$emojiCDN.'/emoji/alu/暗地观察@2x.png" alt="暗地观察" class="OwO-img">',
+        '[alu-不出所料]' => '<img src="'.$emojiCDN.'/emoji/alu/不出所料@2x.png" alt="不出所料" class="OwO-img">',
+        '[alu-不高兴]' => '<img src="'.$emojiCDN.'/emoji/alu/不高兴@2x.png" alt="不高兴" class="OwO-img">',
+        '[alu-不说话]' => '<img src="'.$emojiCDN.'/emoji/alu/不说话@2x.png" alt="不说话" class="OwO-img">',
+        '[alu-抽烟]' => '<img src="'.$emojiCDN.'/emoji/alu/抽烟@2x.png" alt="抽烟" class="OwO-img">',
+        '[alu-呲牙]' => '<img src="'.$emojiCDN.'/emoji/alu/呲牙@2x.png" alt="呲牙" class="OwO-img">',
+        '[alu-大囧]' => '<img src="'.$emojiCDN.'/emoji/alu/大囧@2x.png" alt="大囧" class="OwO-img">',
+        '[alu-得意]' => '<img src="'.$emojiCDN.'/emoji/alu/得意@2x.png" alt="得意" class="OwO-img">',
+        '[alu-愤怒]' => '<img src="'.$emojiCDN.'/emoji/alu/愤怒@2x.png" alt="愤怒" class="OwO-img">',
+        '[alu-尴尬]' => '<img src="'.$emojiCDN.'/emoji/alu/尴尬@2x.png" alt="尴尬" class="OwO-img">',
+        '[alu-高兴]' => '<img src="'.$emojiCDN.'/emoji/alu/高兴@2x.png" alt="高兴" class="OwO-img">',
+        '[alu-鼓掌]' => '<img src="'.$emojiCDN.'/emoji/alu/鼓掌@2x.png" alt="鼓掌" class="OwO-img">',
+        '[alu-观察]' => '<img src="'.$emojiCDN.'/emoji/alu/观察@2x.png" alt="观察" class="OwO-img">',
+        '[alu-害羞]' => '<img src="'.$emojiCDN.'/emoji/alu/害羞@2x.png" alt="害羞" class="OwO-img">',
+        '[alu-汗]' => '<img src="'.$emojiCDN.'/emoji/alu/汗@2x.png" alt="汗" class="OwO-img">',
+        '[alu-黑线]' => '<img src="'.$emojiCDN.'/emoji/alu/黑线@2x.png" alt="黑线" class="OwO-img">',
+        '[alu-欢呼]' => '<img src="'.$emojiCDN.'/emoji/alu/欢呼@2x.png" alt="欢呼" class="OwO-img">',
+        '[alu-击掌]' => '<img src="'.$emojiCDN.'/emoji/alu/击掌@2x.png" alt="击掌" class="OwO-img">',
+        '[alu-惊喜]' => '<img src="'.$emojiCDN.'/emoji/alu/惊喜@2x.png" alt="惊喜" class="OwO-img">',
+        '[alu-看不见]' => '<img src="'.$emojiCDN.'/emoji/alu/看不见@2x.png" alt="看不见" class="OwO-img">',
+        '[alu-看热闹]' => '<img src="'.$emojiCDN.'/emoji/alu/看热闹@2x.png" alt="看热闹" class="OwO-img">',
+        '[alu-抠鼻]' => '<img src="'.$emojiCDN.'/emoji/alu/抠鼻@2x.png" alt="抠鼻" class="OwO-img">',
+        '[alu-口水]' => '<img src="'.$emojiCDN.'/emoji/alu/口水@2x.png" alt="口水" class="OwO-img">',
+        '[alu-哭泣]' => '<img src="'.$emojiCDN.'/emoji/alu/哭泣@2x.png" alt="哭泣" class="OwO-img">',
+        '[alu-狂汗]' => '<img src="'.$emojiCDN.'/emoji/alu/狂汗@2x.png" alt="狂汗" class="OwO-img">',
+        '[alu-蜡烛]' => '<img src="'.$emojiCDN.'/emoji/alu/蜡烛@2x.png" alt="蜡烛" class="OwO-img">',
+        '[alu-脸红]' => '<img src="'.$emojiCDN.'/emoji/alu/脸红@2x.png" alt="脸红" class="OwO-img">',
+        '[alu-内伤]' => '<img src="'.$emojiCDN.'/emoji/alu/内伤@2x.png" alt="内伤" class="OwO-img">',
+        '[alu-喷水]' => '<img src="'.$emojiCDN.'/emoji/alu/喷水@2x.png" alt="喷水" class="OwO-img">',
+        '[alu-喷血]' => '<img src="'.$emojiCDN.'/emoji/alu/喷血@2x.png" alt="喷血" class="OwO-img">',
+        '[alu-期待]' => '<img src="'.$emojiCDN.'/emoji/alu/期待@2x.png" alt="期待" class="OwO-img">',
+        '[alu-亲亲]' => '<img src="'.$emojiCDN.'/emoji/alu/亲亲@2x.png" alt="亲亲" class="OwO-img">',
+        '[alu-傻笑]' => '<img src="'.$emojiCDN.'/emoji/alu/傻笑@2x.png" alt="傻笑" class="OwO-img">',
+        '[alu-扇耳光]' => '<img src="'.$emojiCDN.'/emoji/alu/扇耳光@2x.png" alt="扇耳光" class="OwO-img">',
+        '[alu-深思]' => '<img src="'.$emojiCDN.'/emoji/alu/深思@2x.png" alt="深思" class="OwO-img">',
+        '[alu-锁眉]' => '<img src="'.$emojiCDN.'/emoji/alu/锁眉@2x.png" alt="锁眉" class="OwO-img">',
+        '[alu-投降]' => '<img src="'.$emojiCDN.'/emoji/alu/投降@2x.png" alt="投降" class="OwO-img">',
+        '[alu-吐]' => '<img src="'.$emojiCDN.'/emoji/alu/吐@2x.png" alt="吐" class="OwO-img">',
+        '[alu-吐舌]' => '<img src="'.$emojiCDN.'/emoji/alu/吐舌@2x.png" alt="吐舌" class="OwO-img">',
+        '[alu-吐血倒地]' => '<img src="'.$emojiCDN.'/emoji/alu/吐血倒地@2x.png" alt="吐血倒地" class="OwO-img">',
+        '[alu-无奈]' => '<img src="'.$emojiCDN.'/emoji/alu/无奈@2x.png" alt="无奈" class="OwO-img">',
+        '[alu-无所谓]' => '<img src="'.$emojiCDN.'/emoji/alu/无所谓@2x.png" alt="无所谓" class="OwO-img">',
+        '[alu-无语]' => '<img src="'.$emojiCDN.'/emoji/alu/无语@2x.png" alt="无语" class="OwO-img">',
+        '[alu-喜极而泣]' => '<img src="'.$emojiCDN.'/emoji/alu/喜极而泣@2x.png" alt="喜极而泣" class="OwO-img">',
+        '[alu-献花]' => '<img src="'.$emojiCDN.'/emoji/alu/献花@2x.png" alt="献花" class="OwO-img">',
+        '[alu-献黄瓜]' => '<img src="'.$emojiCDN.'/emoji/alu/献黄瓜@2x.png" alt="献黄瓜" class="OwO-img">',
+        '[alu-想一想]' => '<img src="'.$emojiCDN.'/emoji/alu/想一想@2x.png" alt="想一想" class="OwO-img">',
+        '[alu-小怒]' => '<img src="'.$emojiCDN.'/emoji/alu/小怒@2x.png" alt="小怒" class="OwO-img">',
+        '[alu-小眼睛]' => '<img src="'.$emojiCDN.'/emoji/alu/小眼睛@2x.png" alt="小眼睛" class="OwO-img">',
+        '[alu-邪恶]' => '<img src="'.$emojiCDN.'/emoji/alu/邪恶@2x.png" alt="邪恶" class="OwO-img">',
+        '[alu-咽气]' => '<img src="'.$emojiCDN.'/emoji/alu/咽气@2x.png" alt="咽气" class="OwO-img">',
+        '[alu-阴暗]' => '<img src="'.$emojiCDN.'/emoji/alu/阴暗@2x.png" alt="阴暗" class="OwO-img">',
+        '[alu-赞一个]' => '<img src="'.$emojiCDN.'/emoji/alu/赞一个@2x.png" alt="赞一个" class="OwO-img">',
+        '[alu-长草]' => '<img src="'.$emojiCDN.'/emoji/alu/长草@2x.png" alt="长草" class="OwO-img">',
+        '[alu-中刀]' => '<img src="'.$emojiCDN.'/emoji/alu/中刀@2x.png" alt="中刀" class="OwO-img">',
+        '[alu-中枪]' => '<img src="'.$emojiCDN.'/emoji/alu/中枪@2x.png" alt="中枪" class="OwO-img">',
+        '[alu-中指]' => '<img src="'.$emojiCDN.'/emoji/alu/中指@2x.png" alt="中指" class="OwO-img">',
+        '[alu-肿包]' => '<img src="'.$emojiCDN.'/emoji/alu/肿包@2x.png" alt="肿包" class="OwO-img">',
+        '[alu-皱眉]' => '<img src="'.$emojiCDN.'/emoji/alu/皱眉@2x.png" alt="皱眉" class="OwO-img">',
+        '[alu-装大款]' => '<img src="'.$emojiCDN.'/emoji/alu/装大款@2x.png" alt="装大款" class="OwO-img">',
+        '[alu-坐等]' => '<img src="'.$emojiCDN.'/emoji/alu/坐等@2x.png" alt="坐等" class="OwO-img">',
+        //泡泡
+        '[paopao-啊]' => '<img src="'.$emojiCDN.'/emoji/paopao/啊@2x.png" alt="啊" class="OwO-img">',
+        '[paopao-爱心]' => '<img src="'.$emojiCDN.'/emoji/paopao/爱心@2x.png" alt="爱心" class="OwO-img">',
+        '[paopao-鄙视]' => '<img src="'.$emojiCDN.'/emoji/paopao/鄙视@2x.png" alt="鄙视" class="OwO-img">',
+        '[paopao-便便]' => '<img src="'.$emojiCDN.'/emoji/paopao/便便@2x.png" alt="便便" class="OwO-img">',
+        '[paopao-不高兴]' => '<img src="'.$emojiCDN.'/emoji/paopao/不高兴@2x.png" alt="不高兴" class="OwO-img">',
+        '[paopao-彩虹]' => '<img src="'.$emojiCDN.'/emoji/paopao/彩虹@2x.png" alt="彩虹" class="OwO-img">',
+        '[paopao-茶杯]' => '<img src="'.$emojiCDN.'/emoji/paopao/茶杯@2x.png" alt="茶杯" class="OwO-img">',
+        '[paopao-大拇指]' => '<img src="'.$emojiCDN.'/emoji/paopao/大拇指@2x.png" alt="大拇指" class="OwO-img">',
+        '[paopao-蛋糕]' => '<img src="'.$emojiCDN.'/emoji/paopao/蛋糕@2x.png" alt="蛋糕" class="OwO-img">',
+        '[paopao-灯泡]' => '<img src="'.$emojiCDN.'/emoji/paopao/灯泡@2x.png" alt="灯泡" class="OwO-img">',
+        '[paopao-乖]' => '<img src="'.$emojiCDN.'/emoji/paopao/乖@2x.png" alt="乖" class="OwO-img">',
+        '[paopao-哈哈]' => '<img src="'.$emojiCDN.'/emoji/paopao/哈哈@2x.png" alt="哈哈" class="OwO-img">',
+        '[paopao-汗]' => '<img src="'.$emojiCDN.'/emoji/paopao/汗@2x.png" alt="汗" class="OwO-img">',
+        '[paopao-呵呵]' => '<img src="'.$emojiCDN.'/emoji/paopao/呵呵@2x.png" alt="呵呵" class="OwO-img">',
+        '[paopao-黑线]' => '<img src="'.$emojiCDN.'/emoji/paopao/黑线@2x.png" alt="黑线" class="OwO-img">',
+        '[paopao-红领巾]' => '<img src="'.$emojiCDN.'/emoji/paopao/红领巾@2x.png" alt="红领巾" class="OwO-img">',
+        '[paopao-呼]' => '<img src="'.$emojiCDN.'/emoji/paopao/呼@2x.png" alt="呼" class="OwO-img">',
+        '[paopao-花心]' => '<img src="'.$emojiCDN.'/emoji/paopao/花心@2x.png" alt="花心" class="OwO-img">',
+        '[paopao-滑稽]' => '<img src="'.$emojiCDN.'/emoji/paopao/滑稽@2x.png" alt="滑稽" class="OwO-img">',
+        '[paopao-惊哭]' => '<img src="'.$emojiCDN.'/emoji/paopao/惊哭@2x.png" alt="惊哭" class="OwO-img">',
+        '[paopao-惊讶]' => '<img src="'.$emojiCDN.'/emoji/paopao/惊讶@2x.png" alt="惊讶" class="OwO-img">',
+        '[paopao-开心]' => '<img src="'.$emojiCDN.'/emoji/paopao/开心@2x.png" alt="开心" class="OwO-img">',
+        '[paopao-酷]' => '<img src="'.$emojiCDN.'/emoji/paopao/酷@2x.png" alt="酷" class="OwO-img">',
+        '[paopao-狂汗]' => '<img src="'.$emojiCDN.'/emoji/paopao/狂汗@2x.png" alt="狂汗" class="OwO-img">',
+        '[paopao-蜡烛]' => '<img src="'.$emojiCDN.'/emoji/paopao/蜡烛@2x.png" alt="蜡烛" class="OwO-img">',
+        '[paopao-懒得理]' => '<img src="'.$emojiCDN.'/emoji/paopao/懒得理@2x.png" alt="懒得理" class="OwO-img">',
+        '[paopao-泪]' => '<img src="'.$emojiCDN.'/emoji/paopao/泪@2x.png" alt="泪" class="OwO-img">',
+        '[paopao-冷]' => '<img src="'.$emojiCDN.'/emoji/paopao/冷@2x.png" alt="冷" class="OwO-img">',
+        '[paopao-礼物]' => '<img src="'.$emojiCDN.'/emoji/paopao/礼物@2x.png" alt="礼物" class="OwO-img">',
+        '[paopao-玫瑰]' => '<img src="'.$emojiCDN.'/emoji/paopao/玫瑰@2x.png" alt="玫瑰" class="OwO-img">',
+        '[paopao-勉强]' => '<img src="'.$emojiCDN.'/emoji/paopao/勉强@2x.png" alt="勉强" class="OwO-img">',
+        '[paopao-你懂的]' => '<img src="'.$emojiCDN.'/emoji/paopao/你懂的@2x.png" alt="你懂的" class="OwO-img">',
+        '[paopao-怒]' => '<img src="'.$emojiCDN.'/emoji/paopao/怒@2x.png" alt="怒" class="OwO-img">',
+        '[paopao-喷]' => '<img src="'.$emojiCDN.'/emoji/paopao/喷@2x.png" alt="喷" class="OwO-img">',
+        '[paopao-钱]' => '<img src="'.$emojiCDN.'/emoji/paopao/钱@2x.png" alt="钱" class="OwO-img">',
+        '[paopao-钱币]' => '<img src="'.$emojiCDN.'/emoji/paopao/钱币@2x.png" alt="钱币" class="OwO-img">',
+        '[paopao-弱]' => '<img src="'.$emojiCDN.'/emoji/paopao/弱@2x.png" alt="弱" class="OwO-img">',
+        '[paopao-三道杠]' => '<img src="'.$emojiCDN.'/emoji/paopao/三道杠@2x.png" alt="三道杠" class="OwO-img">',
+        '[paopao-沙发]' => '<img src="'.$emojiCDN.'/emoji/paopao/沙发@2x.png" alt="沙发" class="OwO-img">',
+        '[paopao-生气]' => '<img src="'.$emojiCDN.'/emoji/paopao/生气@2x.png" alt="生气" class="OwO-img">',
+        '[paopao-胜利]' => '<img src="'.$emojiCDN.'/emoji/paopao/胜利@2x.png" alt="胜利" class="OwO-img">',
+        '[paopao-手纸]' => '<img src="'.$emojiCDN.'/emoji/paopao/手纸@2x.png" alt="手纸" class="OwO-img">',
+        '[paopao-睡觉]' => '<img src="'.$emojiCDN.'/emoji/paopao/睡觉@2x.png" alt="睡觉" class="OwO-img">',
+        '[paopao-酸爽]' => '<img src="'.$emojiCDN.'/emoji/paopao/酸爽@2x.png" alt="酸爽" class="OwO-img">',
+        '[paopao-太开心]' => '<img src="'.$emojiCDN.'/emoji/paopao/太开心@2x.png" alt="太开心" class="OwO-img">',
+        '[paopao-太阳]' => '<img src="'.$emojiCDN.'/emoji/paopao/太阳@2x.png" alt="太阳" class="OwO-img">',
+        '[paopao-吐]' => '<img src="'.$emojiCDN.'/emoji/paopao/吐@2x.png" alt="吐" class="OwO-img">',
+        '[paopao-吐舌]' => '<img src="'.$emojiCDN.'/emoji/paopao/吐舌@2x.png" alt="吐舌" class="OwO-img">',
+        '[paopao-挖鼻]' => '<img src="'.$emojiCDN.'/emoji/paopao/挖鼻@2x.png" alt="挖鼻" class="OwO-img">',
+        '[paopao-委屈]' => '<img src="'.$emojiCDN.'/emoji/paopao/委屈@2x.png" alt="委屈" class="OwO-img">',
+        '[paopao-捂嘴笑]' => '<img src="'.$emojiCDN.'/emoji/paopao/捂嘴笑@2x.png" alt="捂嘴笑" class="OwO-img">',
+        '[paopao-犀利]' => '<img src="'.$emojiCDN.'/emoji/paopao/犀利@2x.png" alt="犀利" class="OwO-img">',
+        '[paopao-香蕉]' => '<img src="'.$emojiCDN.'/emoji/paopao/香蕉@2x.png" alt="香蕉" class="OwO-img">',
+        '[paopao-小乖]' => '<img src="'.$emojiCDN.'/emoji/paopao/小乖@2x.png" alt="小乖" class="OwO-img">',
+        '[paopao-小红脸]' => '<img src="'.$emojiCDN.'/emoji/paopao/小红脸@2x.png" alt="小红脸" class="OwO-img">',
+        '[paopao-笑尿]' => '<img src="'.$emojiCDN.'/emoji/paopao/笑尿@2x.png" alt="笑尿" class="OwO-img">',
+        '[paopao-笑眼]' => '<img src="'.$emojiCDN.'/emoji/paopao/笑眼@2x.png" alt="笑眼" class="OwO-img">',
+        '[paopao-心碎]' => '<img src="'.$emojiCDN.'/emoji/paopao/心碎@2x.png" alt="心碎" class="OwO-img">',
+        '[paopao-星星月亮]' => '<img src="'.$emojiCDN.'/emoji/paopao/星星月亮@2x.png" alt="星星月亮" class="OwO-img">',
+        '[paopao-呀咩爹]' => '<img src="'.$emojiCDN.'/emoji/paopao/呀咩爹@2x.png" alt="呀咩爹" class="OwO-img">',
+        '[paopao-药丸]' => '<img src="'.$emojiCDN.'/emoji/paopao/药丸@2x.png" alt="药丸" class="OwO-img">',
+        '[paopao-咦]' => '<img src="'.$emojiCDN.'/emoji/paopao/咦@2x.png" alt="咦" class="OwO-img">',
+        '[paopao-疑问]' => '<img src="'.$emojiCDN.'/emoji/paopao/疑问@2x.png" alt="疑问" class="OwO-img">',
+        '[paopao-阴险]' => '<img src="'.$emojiCDN.'/emoji/paopao/阴险@2x.png" alt="阴险" class="OwO-img">',
+        '[paopao-音乐]' => '<img src="'.$emojiCDN.'/emoji/paopao/音乐@2x.png" alt="音乐" class="OwO-img">',
+        '[paopao-真棒]' => '<img src="'.$emojiCDN.'/emoji/paopao/真棒@2x.png" alt="真棒" class="OwO-img">',
+        '[paopao-nico]' => '<img src="'.$emojiCDN.'/emoji/paopao/nico@2x.png" alt="nico" class="OwO-img">',
+        '[paopao-OK]' => '<img src="'.$emojiCDN.'/emoji/paopao/OK@2x.png" alt="OK" class="OwO-img">',
+        '[paopao-what]' => '<img src="'.$emojiCDN.'/emoji/paopao/what@2x.png" alt="what" class="OwO-img">',
+        //小电视
+        '[tv-白眼]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/baiyan.png" alt="白眼" class="OwO-img">',
+        '[tv-doge]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/doge.png" alt="doge" class="OwO-img">',
+        '[tv-坏笑]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/huaixiao.png" alt="坏笑" class="OwO-img">',
+        '[tv-难过]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/nanguo.png" alt="难过" class="OwO-img">',
+        '[tv-生气]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/shengqi.png" alt="生气" class="OwO-img">',
+        '[tv-委屈]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/weiqu.png" alt="委屈" class="OwO-img">',
+        '[tv-斜眼笑]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/xieyanxiao.png" alt="斜眼笑" class="OwO-img">',
+        '[tv-发呆]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/fadai.png" alt="发呆" class="OwO-img">',
+        '[tv-发怒]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/fanu.png" alt="发怒" class="OwO-img">',
+        '[tv-惊吓]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/jingxia.png" alt="惊吓" class="OwO-img">',
+        '[tv-呕吐]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/outu.png" alt="呕吐" class="OwO-img">',
+        '[tv-思考]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/sikao.png" alt="思考" class="OwO-img">',
+        '[tv-微笑]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/weixiao.png" alt="微笑" class="OwO-img">',
+        '[tv-疑问]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/yiwen.png" alt="疑问" class="OwO-img">',
+        '[tv-大哭]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/daku.png" alt="大哭" class="OwO-img">',
+        '[tv-鼓掌]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/guzhang.png" alt="鼓掌" class="OwO-img">',
+        '[tv-抠鼻]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/koubi.png" alt="抠鼻" class="OwO-img">',
+        '[tv-亲亲]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/qinqin.png" alt="亲亲" class="OwO-img">',
+        '[tv-调皮]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/tiaopi.png" alt="调皮" class="OwO-img">',
+        '[tv-笑哭]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/xiaoku.png" alt="笑哭" class="OwO-img">',
+        '[tv-晕]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/yun.png" alt="晕" class="OwO-img">',
+        '[tv-点赞]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/dianzan.png" alt="点赞" class="OwO-img">',
+        '[tv-害羞]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/haixiu.png" alt="害羞" class="OwO-img">',
+        '[tv-睡着]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/shuizhao.png" alt="睡着" class="OwO-img">',
+        '[tv-色]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/se.png" alt="色" class="OwO-img">',
+        '[tv-吐血]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/tuxue.png" alt="吐血" class="OwO-img">',
+        '[tv-无奈]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/wunai.png" alt="无奈" class="OwO-img">',
+        '[tv-再见]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/zaijian.png" alt="再见" class="OwO-img">',
+        '[tv-流汗]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/liuhan.png" alt="流汗" class="OwO-img">',
+        '[tv-偷笑]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/touxiao.png" alt="偷笑" class="OwO-img">',
+        '[tv-抓狂]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/zhuakuang.png" alt="抓狂" class="OwO-img">',
+        '[tv-黑人问号]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/heirenwenhao.png" alt="黑人问号" class="OwO-img">',
+        '[tv-困]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/kun2.png" alt="困" class="OwO-img">',
+        '[tv-打脸]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/dalian.png" alt="打脸" class="OwO-img">',
+        '[tv-闭嘴]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/bizui.png" alt="闭嘴" class="OwO-img">',
+        '[tv-鄙视]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/bishi.png" alt="鄙视" class="OwO-img">',
+        '[tv-腼腆]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/miantian.png" alt="腼腆" class="OwO-img">',
+        '[tv-馋]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/chan.png" alt="馋" class="OwO-img">',
+        '[tv-可爱]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/keai.png" alt="可爱" class="OwO-img">',
+        '[tv-发财]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/facai.png" alt="发财" class="OwO-img">',
+        '[tv-生病]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/shengbing.png" alt="生病" class="OwO-img">',
+        '[tv-流鼻血]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/liubixue.png" alt="流鼻血" class="OwO-img">',
+        '[tv-尴尬]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/ganga.png" alt="尴尬" class="OwO-img">',
+        '[tv-大佬]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/dalao.png" alt="大佬" class="OwO-img">',
+        '[tv-流泪]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/liulei.png" alt="流泪" class="OwO-img">',
+        '[tv-冷漠]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/lengmo.png" alt="冷漠" class="OwO-img">',
+        '[tv-皱眉]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/zhoumei.png" alt="皱眉" class="OwO-img">',
+        '[tv-鬼脸]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/guilian.png" alt="鬼脸" class="OwO-img">',
+        '[tv-调侃]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/tiaokan.png" alt="调侃" class="OwO-img">',
+        '[tv-目瞪口呆]' => '<img src="'.$emojiCDN.'/emoji/xiaodianshi/mudengkoudai.png" alt="目瞪口呆" class="OwO-img">',
+        //滑小稽
+        '[hxj-红领巾]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/红领巾.gif" alt="红领巾" class="OwO-img">',
+        '[hxj-害怕]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/害怕.gif" alt="害怕" class="OwO-img">',
+        '[hxj-跪下围观]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/跪下围观.gif" alt="跪下围观" class="OwO-img">',
+        '[hxj-背锅]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/背锅.gif" alt="背锅" class="OwO-img">',
+        '[hxj-妹汁]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/妹汁.gif" alt="妹汁" class="OwO-img">',
+        '[hxj-严肃点]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/严肃点.gif" alt="严肃点" class="OwO-img">',
+        '[hxj-佩服]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/佩服.gif" alt="佩服" class="OwO-img">',
+        '[hxj-暖暖]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/暖暖.gif" alt="暖暖" class="OwO-img">',
+        '[hxj-交朋友]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/交朋友.gif" alt="交朋友" class="OwO-img">',
+        '[hxj-浪里个浪]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/浪里个浪.gif" alt="浪里个浪" class="OwO-img">',
+        '[hxj-666]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/666.gif" alt="666" class="OwO-img">',
+        '[hxj-小心点]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/小心点.gif" alt="小心点" class="OwO-img">',
+        '[hxj-禁止滑稽]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/禁止滑稽.gif" alt="禁止滑稽" class="OwO-img">',
+        '[hxj-方了]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/方了.gif" alt="方了" class="OwO-img">',
+        '[hxj-瞅你咋的]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/瞅你咋的.gif" alt="瞅你咋的" class="OwO-img">',
+        '[hxj-惊呆]' => '<img src="'.$emojiCDN.'/emoji/huaxiaoji/惊呆.gif" alt="惊呆" class="OwO-img">'
     );
     return strtr($comment_text,$data_OwO);
 }
@@ -777,6 +848,7 @@ function comment_add_at($comment_text, $comment = '') {
 add_filter( 'comment_text' , 'comment_add_owo', 20, 2);
 add_filter( 'comment_text' , 'comment_add_at', 20, 2);
 add_filter( 'get_comment_text' , 'comment_add_owo', 20, 2);
+add_filter( 'the_content' , 'comment_add_owo', 20, 2);
 
 // 默认头像
 add_filter( 'avatar_defaults', 'newgravatar' );  
@@ -795,28 +867,27 @@ function newgravatar ($avatar_defaults) {
 
 // 评论邮件回复功能
 function comment_mail_notify($comment_id) {
-	$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
-	$comment = get_comment($comment_id);
-	$parent_id = $comment->comment_parent ? $comment->comment_parent : '';
-	$spam_confirmed = $comment->comment_approved;
-	if (($parent_id != '') && ($spam_confirmed != 'spam')) {
-		$wp_email = 'no-reply@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
-		$to = trim(get_comment($parent_id)->comment_author_email);
-		$subject = '您在 [' . $blogname . '] 中的留言有了新的回复';
-		$message = '<div style="color:#555;font:12px/1.5 微软雅黑,Tahoma,Helvetica,Arial,sans-serif;width:650px;margin:50px auto;border-top: none;box-shadow:0 0px 3px #aaaaaa;" ><table border="0" cellspacing="0" cellpadding="0"><tbody><tr valign="top" height="2"><td valign="top"><div style="background-color:white;border-top:2px solid #12ADDB;box-shadow:0 1px 3px #AAAAAA;line-padding:0 15px 12px;width:650px;color:#555555;font-family:微软雅黑, Arial;;font-size:12px;"><h2 style="border-bottom:1px solid #DDD;font-size:14px;font-weight:normal;padding:8px 0 10px 8px;"><span style="color: #12ADDB;font-weight: bold;">&gt; </span>您在 <a style="text-decoration:none; color:#58B5F5;font-weight:600;" href="' . home_url() . '">' . $blogname . '</a> 博客上的留言有回复啦！</h2><div style="padding:0 12px 0 12px;margin-top:18px">
-<p>您好, ' . trim(get_comment($parent_id)->comment_author) . '! 您发表在本站 《' . get_the_title($comment->comment_post_ID) . '》 的评论:</p>
-<p style="background-color: #EEE;border: 1px solid #DDD;padding: 20px;margin: 15px 0;">' . nl2br(strip_tags(get_comment($parent_id)->comment_content)) . '</p>
-<p>' . trim($comment->comment_author) . ' 给您的回复如下:</p>
-<p style="background-color: #EEE;border: 1px solid #DDD;padding: 20px;margin: 15px 0;">' . nl2br(strip_tags($comment->comment_content)) . '</p>
-<p>您可以点击 <a style="text-decoration:none; color:#5692BC" href="' . htmlspecialchars(get_comment_link($parent_id)) . '">这里查看回复的完整內容</a>，也欢迎再次光临 <a style="text-decoration:none; color:#5692BC"
-href="' . home_url() . '">' . $blogname . '</a>。祝您天天开心，欢迎下次访问！谢谢。</p>
-<p style="padding-bottom: 15px;">(此邮件由系统自动发出, 请勿回复)</p></div></div></td></tr></tbody></table></div>';
-		$from = "From: \"" . get_option('blogname') . "\" <$wp_email>";
-		$headers = "$from\nContent-Type: text/html; charset=" . get_option('blog_charset') . "\n";
-		if(cs_get_option( 'memory_comment_reply' )==true) {
-			wp_mail( $to, $subject, $message, $headers );	
-		}
-	}
+  $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+  $comment = get_comment($comment_id);
+  $parent_id = $comment->comment_parent ? $comment->comment_parent : '';
+  $spam_confirmed = $comment->comment_approved;
+  if (($parent_id != '') && ($spam_confirmed != 'spam')) {
+    $wp_email = 'notice@liubing.me'; //e-mail 发出点
+    $to = trim(get_comment($parent_id)->comment_author_email);
+    $subject = '您在 [' . $blogname . '] 的留言有了回复';
+    $message = 
+		'<div style="color:#555;font:12px/1.5 微软雅黑,Tahoma,Helvetica,Arial,sans-serif;width:650px;margin:50px auto;border-top: none;box-shadow:0 0px 3px #aaaaaa;" ><table border="0" cellspacing="0" cellpadding="0"><tbody><tr valign="top" height="2"><td valign="top"><div style="background-color:white;border-top:2px solid #12ADDB;box-shadow:0 1px 3px #AAAAAA;line-padding:0 15px 12px;width:650px;color:#555555;font-family:微软雅黑, Arial;;font-size:12px;"><h2 style="border-bottom:1px solid #DDD;font-size:14px;font-weight:normal;padding:8px 0 10px 8px;"><span style="color: #12ADDB;font-weight: bold;">&gt; </span>您在 <a style="text-decoration:none; color:#58B5F5;font-weight:600;" href="' . home_url() . '">' . $blogname . '</a> 博客上的留言有回复啦！</h2><div style="padding:0 12px 0 12px;margin-top:18px">
+		<p>您好, ' . trim(get_comment($parent_id)->comment_author) . '! 您发表在本站 《' . get_the_title($comment->comment_post_ID) . '》 的评论:</p>
+		<p style="background-color: #EEE;border: 1px solid #DDD;padding: 20px;margin: 15px 0;">' . nl2br(strip_tags(get_comment($parent_id)->comment_content)) . '</p>
+		<p>' . trim($comment->comment_author) . ' 给您的回复如下:</p>
+		<p style="background-color: #EEE;border: 1px solid #DDD;padding: 20px;margin: 15px 0;">' . nl2br(strip_tags($comment->comment_content)) . '</p>
+		<p>您可以点击 <a style="text-decoration:none; color:#5692BC" href="' . htmlspecialchars(get_comment_link($parent_id)) . '">这里查看回复的完整內容</a>，也欢迎再次光临 <a style="text-decoration:none; color:#5692BC"
+		href="' . home_url() . '">' . $blogname . '</a>。祝您天天开心，欢迎下次访问！谢谢。</p>
+		<p style="padding-bottom: 15px;">(此邮件由系统自动发出, 请勿回复)</p></div></div></td></tr></tbody></table></div>';
+      $from = "From: \"" . get_option('blogname') . "\" <$wp_email>";
+      $headers = "$from\nContent-Type: text/html; charset=" . get_option('blog_charset') . "\n";
+      wp_mail( $to, $subject, $message, $headers );
+  }
 }
 add_action('comment_post', 'comment_mail_notify');
 
@@ -867,3 +938,31 @@ function memory_add_pages() {
     }
 }
 add_action( 'load-themes.php', 'memory_add_pages' );
+
+// 替换图片地址
+function replace_img_url($img){
+    $replace = array('https://user-images.githubusercontent.com' => 'https://cdn.statically.io/img/user-images.githubusercontent.com');//替换前 => 替换后
+    // $replace = array('https://user-images.githubusercontent.com' => 'https://img.liubing.me');//替换前 => 替换后
+    $img = str_replace(array_keys($replace), $replace, $img);
+    return $img;
+}
+// add_filter('the_content', 'replace_img_url'); //正文替换
+// add_filter('the_excerpt', 'replace_img_url'); //摘要替换
+// add_filter('comment_text', 'replace_img_url'); //评论替换
+
+// 评论允许图片
+function allowed_html_tags() {
+    global $allowedtags;
+    $allowedtags['img'] = array(
+        'src' => true,
+        'alt' => true,
+        'class' => true
+    );
+  	$allowedtags['pre'] = array(
+        'class' => true
+    );
+  	$allowedtags['code'] = array(
+        'class' => true
+    );
+}
+add_action('init', 'allowed_html_tags', 10);

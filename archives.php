@@ -12,6 +12,7 @@
  */
 get_header(); ?>
    	<div id="main">
+	   	<?php get_sidebar(); ?>
         <div id="main-part">
 			<?php if(function_exists('memory_breadcrumbs') and cs_get_option( 'memory_breadcrumbs' )==1) { ?>
 				<div class="memory-item breadcrumbs">当前位置：
@@ -155,7 +156,7 @@ get_header(); ?>
 				<?php next_posts_link(__('<div class="page-more">(｡・`ω´･)点我加载更多</div>')); ?>
 				<?php } else { echo '<div class="page-more">你已到达了世界的尽头(｡・`ω´･)！</div>'; } ?>  
 			</div>
-        </div>
-        <?php get_sidebar(); ?>
+		</div>
+		<?php get_sidebar('right'); ?>
     </div>
 <?php get_footer(); 

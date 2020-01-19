@@ -38,21 +38,20 @@ setPostViews(get_the_ID()); ?>
 						<div class="post-main post-type-main">
                             <div class="post-content">
 								<div class="post-tag"><?php the_tags('', ' ', ''); ?></div>
-								<div class="post-content-real"><?php the_content(); ?></div>
+								<div class="post-content-real markdown-body" id="post-content"><?php the_content(); ?></div>
                         	</div>
-							<div class="social-share">
-								<a href="javascript:;" class="social-share-icon memory-copy"></a>
-							</div>
 							<div class="like-pay">
 								<span class="post-like"><a href="javascript:;" data-action="memory_like" data-id="<?php the_ID(); ?>" class="like<?php if(isset($_COOKIE['memory_like_'.$post->ID])) echo ' have-like';?>"> <span class="like-count"><?php if( get_post_meta($post->ID,'memory_like',true) ){ echo get_post_meta($post->ID,'memory_like',true); } else { echo '0'; }?></span></a></span>
 								<span class="post-pay"><i class="memory memory-dashang"></i> 赏</span>
+								<span class="post-share"><i class="memory memory-share"></i> 分享</span>
 							</div>
-							<div class="pay-box">
-								<div class="pay-header">
+							<!-- 打赏 -->
+							<div class="dialog-box pay-box">
+								<div class="box-header">
 									<span>请作者吃个鸡腿！</span>
 									<i class="memory memory-close"></i>
 								</div>
-								<div class="pay-body">
+								<div class="box-body">
 									<?php 
 									$alipay_image_id = cs_get_option( 'memory_alipay_image' );
 									$alipay_attachment = wp_get_attachment_image_src( $alipay_image_id, 'full' );
@@ -73,10 +72,23 @@ setPostViews(get_the_ID()); ?>
 									<h4>扫一扫支付</h4>
 									<img class="wechatpay chosen" src="<?php echo $wechat_attachment[0]; ?>"/>												
 									<?php } else { ?>
-									<h4>作者尚未添加打赏二维码！</h3>
+									<h4>作者尚未添加打赏二维码！</h4>
 									<?php } ?>
 								</div>
 							</div>
+							<!-- 分享 -->
+							<div class="dialog-box share-box" style="display: none">
+								<div class="box-header">
+									<span>分享</span>
+									<i class="memory memory-close"></i>
+								</div>
+								<div class="box-body">
+									<div class="social-share">
+										<a href="javascript:;" class="social-share-icon"></a>
+									</div>
+								</div>
+							</div>
+
 						</div>
                         <div class="post-footer">
 							<div class="post-copyright">本站文章除注明转载/出处外，均为本站原创或翻译。若要转载请注明出处，尊重他人劳动成果。<br/>转载请注明出处链接 : <a href="<?php echo get_permalink($post->ID);?>" title="<?php echo $post->post_title; ?>"><?php echo get_permalink($post->ID);?></a></div>
@@ -139,7 +151,7 @@ setPostViews(get_the_ID()); ?>
 			<?php
 				comments_template();
 			?>
-        </div>
-        <?php get_sidebar(); ?>
+				</div>
+				<?php get_sidebar('right'); ?>
     </div>
 <?php get_footer();

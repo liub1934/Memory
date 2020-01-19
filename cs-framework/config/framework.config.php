@@ -239,7 +239,7 @@ $options[]      = array(
       'id'    => 'memory_user_js',
       'type'  => 'textarea',
       'title' => '自定义js',
-      'desc'  => '注：本主题使用jQuery版本为3.2.1。',
+      'desc'  => '注：原主题使用jQuery版本为3.2.1，现改成1.7.2。',
     ),
   ), // end: fields
 );

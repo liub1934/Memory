@@ -15,6 +15,7 @@
 get_header();
 setPostViews(get_the_ID()); ?>
    	<div id="main">
+		 		<?php get_sidebar(); ?>
         <div id="main-part">
 			<?php if(function_exists('memory_breadcrumbs') and cs_get_option( 'memory_breadcrumbs' )==1) { ?>
 				<div class="memory-item breadcrumbs">当前位置：
@@ -38,9 +39,11 @@ setPostViews(get_the_ID()); ?>
 							</div>	
 						</header>
 						<div class="post-main post-type-main">
-                            <div class="post-content">
-								<div class="post-content-real"><?php memory_archives_list();the_content(); ?></div>
-                        	</div>
+							<div class="post-content">
+								<div class="post-content-real markdown-body" id="post-content">
+									<?php memory_archives_list();the_content(); ?>
+								</div>
+							</div>
 						</div>                           
                     </article>
                 </div>
@@ -48,7 +51,7 @@ setPostViews(get_the_ID()); ?>
 			<?php
 				comments_template();
 			?>
-        </div>
-        <?php get_sidebar(); ?>
+				</div>
+				<?php get_sidebar('right'); ?>
     </div>
 <?php get_footer();

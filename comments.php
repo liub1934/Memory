@@ -52,9 +52,26 @@
         	<?php endif; ?>
 				<div class="comment-s">
 					<textarea class="text-input error" id="comment" name="comment" rows="8" cols="45" aria-required="true" placeholder="一言：<?php hitokoto(); ?>"></textarea>
-					<div class="OwO no-touch"></div>
-					<button type="submit" name="submit" class="comment-submit push-status">发表评论</button>
-					<span class="comment-cancel"><?php cancel_comment_reply_link('放弃治疗') ?></span>
+					<div class="textarea-bottom">
+						<div class="OwO no-touch" title="选择表情"></div>
+						<div class="OwO-left">
+							<div class="icon-item upload-img shake">
+								<input type="file" id="upload-file" title="上传图片">
+								<i class="memory memory-bck"></i>
+							</div>
+							<i class="icon-item memory memory-loading rotating"></i>
+
+							<div class="icon-item insert-code shake">
+								<i class="memory memory-code" title="插入代码"></i>
+							</div>
+						</div>
+						<div class="reply-area">
+							<div class="comment-cancel">
+								<?php cancel_comment_reply_link('放弃治疗') ?>
+							</div>
+							<button type="submit" name="submit" class="comment-submit push-status">发表评论</button>
+						</div>
+					</div>
 				</div>
 			</div>
 			<?php comment_id_fields(); ?>
@@ -62,7 +79,7 @@
 		</form>                      
         <?php endif; ?>
 	</div>
-	<div id="comments">
+	<div id="comments" class="markdown-body">
 		<?php
 		if ( !comments_open() ) {
 		?>

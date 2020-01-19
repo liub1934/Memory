@@ -5,6 +5,7 @@
 Author: Shawn
 Author URI: https://shawnzeng.com
 -->
+<!DOCTYPE html>
 <html dir="ltr" lang="zh-CN">
 <head>
 	<meta charset="UTF-8">
@@ -73,14 +74,13 @@ Author URI: https://shawnzeng.com
 	?>
 	<meta name="description" content="<?php echo $description; ?>" />
 	<meta name="keywords" content="<?php echo $keywords; ?>" />
-	<!--[if lt IE 9]><script src="//cdn.bootcss.com/html5shiv/r29/html5.js"></script><![endif]-->
+	<!--[if lt IE 9]><script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
 	<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0 - 所有文章" href="<?php echo get_bloginfo('rss2_url'); ?>" />
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0 - 所有评论" href="<?php bloginfo('comments_rss2_url'); ?>" />
-	<link rel="stylesheet" type="text/css" href="<?php bloginfo('stylesheet_url'); ?>?ver=<?php echo wp_get_theme()->get('Version'); ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url'); ?>/css/support.css?ver=<?php echo wp_get_theme()->get('Version'); ?>">
-	<link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url'); ?>/css/iconfont.css?ver=<?php echo wp_get_theme()->get('Version'); ?>">
-	<!--link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_410989_wuhl0k5ojvf.css" /-->
+	<link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url'); ?>/style.css"/>
+	<link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url'); ?>/css/support.css">
+	<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_1092295_mybi9cr243i.css">
 	<?php wp_head(); ?> 
 	<title><?php if ( is_home() ) { bloginfo('name'); echo " - "; bloginfo('description');
         } elseif ( is_category() ) { single_cat_title(); echo " - "; bloginfo('name');
@@ -110,7 +110,7 @@ Author URI: https://shawnzeng.com
 		$cardbg=cs_get_option( 'memory_card_background' );
 		if( $cardbg!=null ) {
 			if( isset($cardbg["image"]) && $cardbg["image"]!='' ) { ?>
-		#sidebar .card-bg {
+		.sidebar .card-bg {
 			background-image: url(<?php echo $cardbg["image"]; ?>);
 			background-position: <?php echo $cardbg["position"]; ?>;
 			background-repeat: <?php echo $cardbg["repeat"]; ?>;
@@ -123,24 +123,12 @@ Author URI: https://shawnzeng.com
 	</style>
 </head>
 <?php flush(); ?>
-<body>
+<body class="line-numbers">
 	<header id="header">
 		<div id="pc-menu">
             <a id="menu-bar" class="memory memory-menu"></a>
             <a id="menu-title" href="<?php echo get_option('home'); ?>"><?php bloginfo('name'); ?></a>
 			<?php wp_nav_menu( array( 'menu' => '', 'container' => 'nav', 'container_id' => 'menu-main', 'container_class' => 'menu-main', 'echo' => true, 'items_wrap' => '<ul>%3$s</ul>', 'depth' => 2, 'theme_location' => 'top-menu' ) ); ?>
-            <a id="menu-login" class="menu-login <?php if ( !is_user_logged_in() ) { echo 'not-login"' . 'href="' . get_option('home') . '/wp-admin"' ; } else { echo 'have-login"'; } ?> >
-            <?php if( is_user_logged_in() ){
-				global $current_user;
-				wp_get_current_user();
-				echo get_avatar( $current_user->user_email, 48);
-            } elseif ( isset($_COOKIE['comment_author_email_'.COOKIEHASH]) ) {
-				$comment_author_email = $_COOKIE['comment_author_email_'.COOKIEHASH];
-				echo get_avatar($comment_author_email, 48);
-            } else {
-            	echo '<i class="memory memory-login"></i>';
-            } ?>
-            </a>
 			<?php if ( is_user_logged_in() ) { ?>
 			<div id="personal-menu">
 				<ul>

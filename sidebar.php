@@ -1,7 +1,7 @@
 <?php $us_name = cs_get_option( 'memory_bloger_user' );
 	$user = get_user_by('login', $us_name);
 ?>
-<div id="sidebar">
+<div id="sidebar" class="sidebar">
     <ul>
 		<li class="memory-item">
 			<div class="card-bg"></div>

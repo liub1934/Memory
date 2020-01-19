@@ -16,4 +16,12 @@ if ( function_exists('register_sidebar') ) {
 		'before_title'  => '<header class="memory-item-header"><h3 class="memory-item-title">',
 		'after_title'   => '</h3></header>',
 	));
+	register_sidebar(array(
+		'name' => '侧边栏-右',
+		'id' => 'sidebar-2',
+		'before_widget' => '<li class="memory-item">',
+		'after_widget'  => '</li>',
+		'before_title'  => '<header class="memory-item-header"><h3 class="memory-item-title">',
+		'after_title'   => '</h3></header>',
+	));
 }
