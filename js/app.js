@@ -575,12 +575,22 @@ App = {
     }
   },
   registerButton: function () {
+    // 注册语言显示
+    Prism.plugins.toolbar.registerButton('code-language', function (env) {
+      var language = env.language.toUpperCase()
+      var dataLanguage = $(env.element).parent().data("language");
+      language = dataLanguage ? dataLanguage.toUpperCase() : language;
+      var text = document.createElement('i');
+      text.className = 'codelanguage memory'
+      text.innerText = language;
+      return text;
+    });
+
     //注册全选按钮
     Prism.plugins.toolbar.registerButton('select-code', function (env) {
       var button = document.createElement('i');
       button.className = 'selectcode memory memory-selectcode'
       button.title = '全选'
-
       button.addEventListener('click', function () {
         // Source: http://stackoverflow.com/a/11128179/2757940
         if (document.body.createTextRange) { // ms

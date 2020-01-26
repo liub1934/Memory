@@ -176,11 +176,9 @@ div.lazy {
 #pc-menu {
   margin: 0 auto;
   height: 42px;
-  width: 980px;
-  min-width: 60%;
-  max-width: 100%;
+  max-width: 1200px;
   position: relative;
-  padding: 0 35px;
+  padding: 0 10px;
   z-index: 1000;
   background-color: #fff;
 }
@@ -344,7 +342,7 @@ div.lazy {
 
 #pc-menu #searchform {
   float: right;
-  margin: 5px 10px;
+  margin: 5px 0;
   position: relative;
 }
 
