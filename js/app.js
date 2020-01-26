@@ -197,7 +197,7 @@ App = {
 
   //图片懒加载
   imageLazyLoad: function () {
-    var $lazyImg = $('img.lazy')
+    var $lazyImg = $('img')
     if (!$lazyImg.length) return
     $lazyImg.lazyload({
       // placeholder: 'https://cdn.jsdelivr.net/gh/liub1934/LB-Blog@master/wp-content/themes/Memory/img/squares.svg',
