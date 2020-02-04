@@ -690,7 +690,7 @@ function memory_archives_list() {
                 $mon = $mon_tmp;
                 $output .= '<li><h3><span class="al_mon">'.$mon.'</span></h3><ul class="al_post_list">'; //输出月份
             }
-            $output .= '<li>'.'<a class="no-des" href="'. get_permalink() .'">'.get_the_time('j日: ') . get_the_title() .'('. get_comments_number('0', '1', '%') .'条评论11111111)</a></li>'; //输出文章日期和标题
+            $output .= '<li>'.'<a class="no-des" href="'. get_permalink() .'">'.get_the_time('j日: ') . get_the_title() .'('. get_comments_number('0', '1', '%') .'条评论)</a></li>'; //输出文章日期和标题
         endwhile;
         wp_reset_postdata();
         $output .= '</ul></li></ul></div>';
@@ -707,7 +707,8 @@ add_action('save_post', 'clear_memory_cache'); // 新发表文章/修改文章�
 add_filter('pre_option_link_manager_enabled','__return_true');
 
 function comment_add_owo($comment_text, $comment = '') {
-    $blogUrl = get_bloginfo('template_url');
+    // $blogUrl = get_bloginfo('template_url');
+    $blogUrl = 'https://cdn.jsdelivr.net/gh/liub1934/Memory@e4fc9d9';
     $data_OwO = array(
         //阿鲁
         '[alu-便便]' => '<img src="'.$blogUrl.'/emoji/alu/便便@2x.png" alt="便便" class="OwO-img">',

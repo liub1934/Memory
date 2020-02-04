@@ -2670,7 +2670,7 @@ pre[class*="language-"] {
 pre[class*="language-"].line-numbers {
   position: relative;
   padding-left: 3.8em;
-  padding-top: 32px;
+  padding-top: 42px;
   counter-reset: linenumber;
 }
 
