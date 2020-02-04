@@ -53,7 +53,7 @@ setPostViews(get_the_ID()); ?>
 												if ( !empty($bookmarks) ) {
 													foreach ($bookmarks as $bookmark) {
 														echo '<li><a class="no-des" data-toggle="tooltip" href="' . $bookmark->link_url . '" title="' . $bookmark->link_name . '">';
-														if($bookmark->link_notes!=null && $bookmark->link_notes!='') 
+														if($bookmark->link_image!=null && $bookmark->link_image!='') 
 															echo '<img data-original="'.$bookmark->link_image.'" src="'.get_template_directory_uri().'/img/squares.svg" alt="'.$bookmark->link_name.'" class="avatar lazy" / >';
 														else
 															echo '<img data-original="'.get_template_directory_uri().'/img/comment-avatar.png" src="'.get_template_directory_uri().'/img/squares.svg" alt="'.$bookmark->link_name.'" class="avatar lazy" / >';
