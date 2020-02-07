@@ -19,8 +19,8 @@ setPostViews(get_the_ID()); ?>
 						<div class="post-main post-type-main">
                             <div class="post-content">
 								<div class="post-content-real markdown-body">
-                  <div style="text-align: center; font-weight: 700">404 Error，页面找不到啦！</div>
-                  <div id="game404"></div>
+                  <div style="text-align: center; font-weight: 700">404 Error，页面找不到啦，玩会游戏吧！</div>
+                  <div id="catch-the-cat"></div>
                 </div>
                         	</div>
 							<div class="like-pay">

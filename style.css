@@ -1857,6 +1857,11 @@ div.lazy {
   color: #d43f57;
 }
 
+#catch-the-cat canvas {
+  width: 100%;
+  height: auto;
+}
+
 /* @media screen and (max-width: 1024px) {
     .social-share.share-component {
         display: none;
