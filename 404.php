@@ -20,7 +20,9 @@ setPostViews(get_the_ID()); ?>
                             <div class="post-content">
 								<div class="post-content-real markdown-body">
                   <div style="text-align: center; font-weight: 700">404 Error，页面找不到啦，玩会游戏吧！</div>
-                  <div id="catch-the-cat"></div>
+                  <div id="catch-the-cat">
+										<?php echo '<img src="'.get_template_directory_uri().'/img/squares.svg" />'; ?>
+									</div>
                 </div>
                         	</div>
 							<div class="like-pay">

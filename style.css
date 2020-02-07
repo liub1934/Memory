@@ -1857,9 +1857,23 @@ div.lazy {
   color: #d43f57;
 }
 
+#catch-the-cat {
+  position: relative;
+  min-height: 100px;
+}
+
 #catch-the-cat canvas {
   width: 100%;
   height: auto;
+  position: relative;
+}
+
+#catch-the-cat img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
 }
 
 /* @media screen and (max-width: 1024px) {
