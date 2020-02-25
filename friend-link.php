@@ -52,7 +52,7 @@ setPostViews(get_the_ID()); ?>
 												<?php $bookmarks = get_bookmarks('orderby=rand&category_name=' . $linkcat->name);
 												if ( !empty($bookmarks) ) {
 													foreach ($bookmarks as $bookmark) {
-														echo '<li><a class="no-des" data-toggle="tooltip" href="' . $bookmark->link_url . '" title="' . $bookmark->link_name . '">';
+														echo '<li><a class="no-des" target="_blank" data-toggle="tooltip" href="' . $bookmark->link_url . '" title="' . $bookmark->link_name . '">';
 														if($bookmark->link_image!=null && $bookmark->link_image!='') 
 															echo '<img data-original="'.$bookmark->link_image.'" src="'.get_template_directory_uri().'/img/squares.svg" alt="'.$bookmark->link_name.'" class="avatar lazy" / >';
 														else
