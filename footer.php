@@ -13,8 +13,8 @@
 ?>
 	<div id="foot">
 		<a id="back-to-top"><i class="memory memory-top"></i></a>
-		<p>CDN by <a class="theme" href="https://www.cloudflare.com/" target="_blank"><b>Cloudflare</b></a><br/>
-			Server by <a class="theme" href="https://www.bt.cn/?invite_code=MV9senRrbW4=" target="_blank"><b>宝塔Linux面板</b></a><br/>
+		<p>CDN by <a class="theme" href="https://www.cloudflare.com/" target="_blank"><img src="https://favicon.yandex.net/favicon/cloudflare.com" style="vertical-align: bottom;"><b>Cloudflare</b></a><br/>
+			Server by <a class="theme" href="https://www.bt.cn/?invite_code=MV9senRrbW4=" target="_blank"><img src="https://favicon.yandex.net/favicon/bt.cn" style="vertical-align: bottom;"><b>宝塔Linux面板</b></a><br/>
 			VPS by <a class="theme" href="https://contabo.com" target="_blank"><img src="https://favicon.yandex.net/favicon/contabo.com" style="vertical-align: bottom;"><b>Contabo</b></a><br/>
 			版权所有 © <?php if( cs_get_option( 'memory_copyright' )!=null ) echo cs_get_option( 'memory_copyright' ); ?> <a class="theme" href="<?php echo get_option( 'siteurl' ); ?>"><b><?php bloginfo('name'); ?></b></a> <?php if( cs_get_option( 'memory_record' )!=null ) { ?> | <a href="javascript:;"><?php echo cs_get_option( 'memory_record' ); ?></a> <?php } ?><br/>
 			<span class="my-face">(●'◡'●)ﾉ</span>本博客已萌萌哒运行了<span id="span_dt_dt"></span><br/>
